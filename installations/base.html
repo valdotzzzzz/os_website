@@ -2,22 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Windows 95 Installation — Valdez, Gean Clyde H.</title>
-
-    <link rel="stylesheet" href="../.css/styles.css">
+    <title>Windows 95 — Valdez</title>
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
 
-    <div id="header-placeholder"></div>
+    <iframe src="../header.html" style="width:100%; border:none; height:400px;" scrolling="no"></iframe>
 
     <div class="content">
+
         <h1><strong>Windows 95 Installation</strong></h1>
 
         <div class="video-wrapper">
             <iframe
-                src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+                src="https://www.youtube.com/embed/MiCb3UTi_N8"
                 title="Project video"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen>
@@ -25,21 +23,7 @@
         </div>
     </div>
 
-    <div id="footer-placeholder"></div>
-
-    <script>
-        fetch('../header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-placeholder').innerHTML = data;
-            });
-
-        fetch('../footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-placeholder').innerHTML = data;
-            });
-    </script>
+    <iframe src="../footer.html" style="width:100%; border:none; height:400px;" scrolling="no"></iframe>
 
 </body>
 </html>
