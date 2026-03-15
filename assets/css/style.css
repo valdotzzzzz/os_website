@@ -1,0 +1,108 @@
+/* ======================
+   Base
+   ====================== */
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ======================
+   Header
+   ====================== */
+.header {
+    background: #d9d9d9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-weight: bold;
+}
+
+/* ======================
+   Nav
+   ====================== */
+.nav {
+    display: flex;
+    gap: 20px;
+}
+
+.menu {
+    position: relative;
+}
+
+.menu > button {
+    background: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 8px 12px;
+}
+
+.menu > button:hover {
+    background: #c8c8c8;
+}
+
+/* ======================
+   Dropdown
+   ====================== */
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 35px;
+    right: 0;
+    background: #d9d9d9;
+    min-width: 210px;
+    flex-direction: column;
+    z-index: 200;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+}
+
+.dropdown button {
+    background: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    text-align: left;
+    padding: 8px 12px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.dropdown button:hover {
+    background: #c8c8c8;
+}
+
+/* ======================
+   Content
+   ====================== */
+.content {
+    padding: 25px;
+    flex: 1;
+}
+
+.content h1 {
+    margin-top: 0;
+}
+
+/* ======================
+   Footer
+   ====================== */
+.footer {
+    background: #d9d9d9;
+    padding: 10px 20px;
+    font-size: 13px;
+    color: #444;
+    text-align: center;
+    border-top: 1px solid #c0c0c0;
+}
