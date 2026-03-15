@@ -1,29 +1,41 @@
 /**
  * components.js
- * Loads header.html and footer.html from /assets/ into every page,
- * then wires up all nav interactions (dropdown toggle, outside-click close,
- * go() / goHome() navigation). Works from any subdirectory depth.
+ * Loads header.html and footer.html from /assets/, wires up nav logic.
+ *
+ * Path resolution: we derive the site root from this script's own absolute
+ * src URL — browsers always resolve script.src to an absolute URL, so
+ * stripping "assets/js/components.js" from the end gives the correct base
+ * regardless of how deep the calling page is in the directory tree.
+ * This works on localhost AND on GitHub Pages (where the repo name adds
+ * an extra path segment that breaks depth-counting approaches).
  */
 (function () {
   "use strict";
 
-  /* ── Resolve root-relative paths from any directory depth ────── */
-  function rootRelative(path) {
-    const parts = window.location.pathname.replace(/\/+$/, "").split("/");
-    // depth = number of directory levels below the root
-    // e.g. /index.html         → depth 0  → prefix "./"
-    //      /installations/x.html → depth 1  → prefix "../"
-    const depth = parts.length - 2;
-    const prefix = depth > 0 ? "../".repeat(depth) : "./";
-    return prefix + path.replace(/^\//, "");
+  /* ── Derive site base URL from this script's absolute src ───── */
+  function getBase() {
+    var scripts = document.querySelectorAll("script[src]");
+    for (var i = 0; i < scripts.length; i++) {
+      if (scripts[i].src.indexOf("components.js") !== -1) {
+        return scripts[i].src.replace("assets/js/components.js", "");
+      }
+    }
+    return "./";
+  }
+
+  var BASE = getBase();
+
+  /* ── Build a URL relative to the site root ───────────────────── */
+  function siteUrl(path) {
+    return BASE + path.replace(/^\//, "");
   }
 
   /* ── Fetch and inject a component ───────────────────────────── */
   async function loadComponent(placeholderId, assetPath) {
-    const el = document.getElementById(placeholderId);
+    var el = document.getElementById(placeholderId);
     if (!el) return;
     try {
-      const res = await fetch(rootRelative(assetPath));
+      var res = await fetch(siteUrl(assetPath));
       if (!res.ok) throw new Error(res.status);
       el.innerHTML = await res.text();
     } catch (e) {
@@ -31,25 +43,17 @@
     }
   }
 
-  /* ── Navigation helpers (exposed globally for onclick attrs) ── */
-
-  /**
-   * Navigates to a page relative to the SITE ROOT, regardless of
-   * which subdirectory the current page is in.
-   *
-   * Usage in header.html:  onclick="go('installations/windows95.html')"
-   */
+  /* ── Navigation helpers (global, called by onclick in header) ── */
   window.go = function (rootPath) {
-    window.location.href = rootRelative(rootPath);
+    window.location.href = siteUrl(rootPath);
   };
 
   window.goHome = function () {
-    window.location.href = rootRelative("index.html");
+    window.location.href = siteUrl("index.html");
   };
 
   /* ── Dropdown toggle ─────────────────────────────────────────── */
   window.toggleMenu = function (id) {
-    // Close all other open dropdowns first
     document.querySelectorAll(".dropdown").forEach(function (menu) {
       if (menu.id !== id) menu.style.display = "none";
     });
@@ -58,12 +62,12 @@
     menu.style.display = menu.style.display === "flex" ? "none" : "flex";
   };
 
-  /* ── Close dropdowns when clicking outside ───────────────────── */
+  /* ── Close dropdowns on outside click ───────────────────────── */
   function bindOutsideClick() {
     document.addEventListener("click", function (e) {
       if (!e.target.closest(".menu")) {
-        document.querySelectorAll(".dropdown").forEach(function (menu) {
-          menu.style.display = "none";
+        document.querySelectorAll(".dropdown").forEach(function (m) {
+          m.style.display = "none";
         });
       }
     });
